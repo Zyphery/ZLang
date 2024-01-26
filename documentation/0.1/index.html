@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/eefb5e4656.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>ZLang documentation</title>
+    <style>
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111111;
+            height: 100%;
+            width: 100%;
+        }
+
+        .content {
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+            width: 12in;
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+        }
+        
+        header {
+            background-color: #1b1b1b;
+            text-align: center;
+            min-width: 12.5em;
+            max-width: 12.5em;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            flex: 1;
+            transition: transform 0.5s ease, min-width 0.5s ease, padding 0.5s ease;
+        }
+
+        nav {
+            color: white;
+            text-align: left;
+            padding-top: 1em;
+            background-color: #222;
+            overflow: hidden;
+            min-width: 14em;
+            max-width: 14em;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            transition: padding-bottom 0.5s;
+        }
+
+        .page {
+            background-color: transparent;
+            color: #f0f0f0;
+            overflow: hidden;
+            overflow-y: scroll;
+            flex: 100%;
+        }
+
+        .page-content {
+            background-color: #444;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .language-version {
+            background-color: #333;
+            padding: 5px;
+            margin: 5px;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            transition: transform 0.5s ease, height 0.5s, margin-bottom 0.5s, margin-top 0.5s;
+        }
+
+        .tab {
+            background-color: transparent;
+            color: transparent;
+            min-width: 75px;
+            height: 30px;
+            border-radius: 8px;
+            border: none;
+            font-size: large;
+            display: block;
+            transform: translateY(30%);
+            transition: transform 0.5s ease 0.2s, background-color 0.5s ease 0.25s, color 0.5s ease 0.25s;
+            z-index: -1;
+
+        }
+
+        nav input[type="text"] {
+            padding: 10px;
+            margin-bottom: 1em;
+            background-color: #1b1b1b;
+            border-radius: 20px;
+            border: 0px solid #333;
+            color: #777;
+            display: flex;
+        }
+
+        .dropdown-tl {
+            color: #3f4ea0;
+            padding: 12px;
+            border: none;
+            border-radius: 24px;
+            align-items: center;
+            display: flex;
+            font-size: medium;
+            font-weight: bold;
+            text-align: left;
+            user-select: none;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: color 150ms, background-color 150ms;
+        }
+
+        .dropdown-tl:hover {
+            background-color: #3f4ea0;
+            color:#fff;
+        }
+
+        .dropdown-tl-icon {
+            transition: transform 250ms;
+        }
+
+        .dropdown-tl-icon.toggled {
+            transform: translateY(3px) rotate(90deg);
+        }
+
+        .dropdown-bl {
+            color: #707070;
+            border: 1px #777 solid;
+            border-radius: 5px;
+            padding: 3px 5px 3px 10px;
+            align-items: center;
+            display: flex;
+            font-size: small;
+            font-weight: normal;
+            text-align: left;
+            user-select: none;
+            cursor: pointer;
+            margin-top: 2px;
+            margin-left: -28px;
+            background-color: transparent;
+            transition: color 150ms, background-color 150ms;
+        }
+
+        .dropdown-bl:hover {
+            background-color: #888;
+            color:#fff;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        nav ul, #navul {
+            list-style-type: none;
+        }
+        
+        #navul {
+            overflow-y: scroll;
+            margin: 0 1em 0 1em;
+            padding: 0;
+        }
+
+        .caret {
+            background-color: transparent;
+            font-size: 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .caret-down::before {
+            transform: rotate(90deg);
+        }
+
+        .nested {
+            max-height: 0px;
+            overflow: hidden;
+            margin-left: -10px;
+            transition: max-height 350ms ease-in-out;
+        }
+
+        .active {
+            max-height: 1000px;
+        }
+
+        nav a {
+            color: #999;
+        }
+
+        nav a:visited {
+            color: #999;
+        }
+
+        .docu-footer {
+            flex: 0;
+            color: #555;
+        }
+
+        @media (max-width: 1145px) {
+            header {
+                transform: translateX(-100%);
+                min-width: 0;
+                padding: 0;
+                flex: 0;
+            }
+
+            nav {
+                flex: 1;
+            }
+
+            .page {
+                min-width: 0;
+                width: 100%;
+                flex: 1;
+            }
+
+            .content {
+                width: auto;
+            }
+        }
+
+        @media (max-height: 400px) {
+            .language-version:not(.language-version.toggled-lv) {
+                transform: translateY(150%);
+                height: 0;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
+
+            .tab {
+                cursor: pointer;
+                color: white;
+                background-color: #333;
+                transition-delay: 0.2s;
+                transform: translateY(-120%) translateY(6px);
+            }
+
+            nav {
+                padding-bottom: 0;
+            }
+        }
+    </style>
+
+    <style id="page-content-style"></style>
+</head>
+<body>
+    <div class="content">
+        <header>
+            <div style="flex:100%">
+                <h1 style="color:#fff; user-select: none; cursor: pointer;" onclick="loadPage('fp')">ZLang</h1>
+                
+                <p style="font-size:15px;color:#999">
+                    The scripting language<br>
+                    Documentation
+                </p>
+            </div>
+            
+            <div class="docu-footer">
+                &copy; 2024 ZLang by Zyphery
+            </div>
+            <div class="docu-footer">    
+                Documentation by Zyphery
+            </div>    
+        </header>
+
+        <nav>
+            <input type="text" placeholder="Search..." style="margin:0 1em 1em 1em;">
+
+            <div style="flex:100%; overflow:scroll">
+                <ul id="navul">
+                    <li>
+                        <span class="caret">
+                            <div class="dropdown-tl">
+                                <div class="dropdown-tl-icon"> 
+                                    <i class="fas fa-angle-right" style="padding-right:5px;"></i>
+                                </div>
+                                About
+                            </div>
+                        </span>
+                        <ul class="nested">
+                            <span class="caret">
+                                <div class="dropdown-bl" onclick="loadPage('about/welcome')">
+                                    <i class="fa-regular fa-square-plus" style="padding-right:5px;"></i>
+                                    Welcome
+                                </div>
+                            </span>
+                            <ul class="nested" style="padding-left:12px">
+                                <li><a href="#introduction">Introduction</a></li>
+                            </ul>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="caret">
+                            <div class="dropdown-tl">
+                                <div class="dropdown-tl-icon"> 
+                                    <i class="fas fa-angle-right" style="padding-right:5px;"></i>
+                                </div>
+                                Manual
+                            </div>
+                        </span>
+                        <ul class="nested">
+                            <li>
+                                <span class="caret">
+                                    <div class="dropdown-bl" onclick="loadPage('manual/rules')">
+                                        <i class="fa-regular fa-square-plus" style="padding-right:5px;"></i>
+                                        Rules
+                                    </div>
+                                </span>
+                                <ul class="nested" style="padding-left:12px">
+                                    <li><a href="#indentation">Indentation</a></li>
+                                    <li><a href="#comments">Comments</a></li>
+                                    <li><a href="#syntax">Syntax</a></li>
+                                    <li><a href="#statements">Statements</a></li>
+                                    <li><a href="#literals">Literals</a></li>
+                                    <li><a href="#types">Types</a></li>
+                                    <li><a href="#functions">Functions</a></li>
+                                    <li><a href="#mutations">Mutations</a></li>
+                                    <li><a href="#classes">Classes</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="caret">
+                                    <div class="dropdown-bl" onclick="loadPage('manual/concepts')">
+                                        <i class="fa-regular fa-square-plus" style="padding-right:5px;"></i>
+                                        Concepts
+                                    </div>
+                                </span>
+                                <ul class="nested" style="padding-left:12px">
+                                    <li><a href="#mutations">Mutations</a></li>
+                                    <li><a href="#classes">Classes</a></li>
+                                    <li><a href="#functions">Functions</a></li>
+                                    <li><a href="#bitwise-operations">Bitwise Operations</a></li>
+                                    <li><a href="#functions">Functions</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="caret">
+                            <div class="dropdown-tl" style="padding-right:5px;">
+                                <div class="dropdown-tl-icon"> 
+                                    <i class="fas fa-angle-right" style="padding-right:5px;"></i>
+                                </div>
+                                Reference
+                            </div>
+                        </span>
+                        <ul class="nested">
+                            <li>
+                                <span class="caret">
+                                    <div class="dropdown-bl" onclick="loadPage('reference/example')">
+                                        <i class="fa-regular fa-square-plus" style="padding-right:5px;"></i>
+                                        Example
+                                    </div>
+                                </span>
+                                <ul class="nested" style="padding-left:12px">
+                                    <li><a href="#example">Example</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="lang-ver" class="language-version">
+                <div style="position:absolute;width:100%;display:flex">
+                    <div style="flex:1"></div>
+                    <button id="language-version-show" class="tab" onclick="showLanguageVersion()">
+                        <i class="fa-solid fa-angle-up" style="transform:translateY(-4px)"></i>
+                    </button>
+                </div>
+                Language version: 0.1
+            </div>
+        </nav>
+
+        <div class="page">
+            <div class="page-content">
+                <!-- <div id="page-container-name">null</div> -->
+                <!-- <iframe id="page-container" src="" frameborder=0></iframe> -->
+            </div>
+            <div style="display: flex; flex-direction: row; width: 100%; background-color: #333; min-height: 150px;"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleButton(id) {
+            const button = document.getElementById(id);
+            button.classList.toggle('hidden');
+            button.classList.toggle('toggled');
+        }
+
+        function to_filepath(page) {
+            return page + ".html"
+        }
+
+        function loadPage(pagename) {
+            // document.getElementById("page-container-name").innerHTML = to_filepath(pagename);
+            // document.getElementById("page-container").src = to_filepath(pagename);
+            loadHTMLContent(to_filepath(pagename));
+        }
+
+        function showLanguageVersion() {
+            var lang_ver = document.querySelector(".language-version");
+            var tab = document.querySelector(".tab");
+
+            lang_ver.classList.toggle("toggled-lv");
+
+            if (!(lang_ver.matches(':hover') && tab.matches(':hover'))) {
+                timeout_id = setTimeout(() => {
+                    lvtab.classList.remove("toggled-lv");
+                }, 1500)
+            }
+        }
+
+        async function loadHTMLContent(filePath, containerId) {
+            var container = document.querySelector('.page-content');
+            var styleTag = document.getElementById('page-content-style');
+
+            try {
+                // Fetch HTML content using the Fetch API with 'blob' response type
+                const response = await fetch(filePath, { mode: 'no-cors' });
+                const blob = await response.blob();
+
+                // Create a FileReader to read the blob as text
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const htmlContent = reader.result;
+
+                    // Your logic to handle HTML content here
+                    // ...
+
+                    container.innerHTML = filePath + ' Loaded content: ' + htmlContent;
+                };
+                reader.readAsText(blob);
+
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        loadPage("fp");
+
+        var lvtab = document.querySelector(".language-version");
+        var timeout_id;
+        document.getElementById("lang-ver").addEventListener('mouseenter', () => {
+            clearTimeout(timeout_id);
+        });
+        document.getElementById("lang-ver").addEventListener('mouseleave', () => {
+            if(lvtab.classList.contains("toggled-lv")) {
+                timeout_id = setTimeout(() => {
+                    lvtab.classList.remove("toggled-lv");
+                }, 1500)
+            }
+        });
+
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function() {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+
+                var ddbl = this.querySelector(".dropdown-bl i");
+                var ddtl = this.querySelector(".dropdown-tl .dropdown-tl-icon");
+                
+                if (ddbl) {
+                    if (this.classList.contains("caret-down")) {
+                        ddbl.classList.remove("fa-square-plus");
+                        ddbl.classList.add("fa-square-minus");
+                    } else {
+                        ddbl.classList.remove("fa-square-minus");
+                        ddbl.classList.add("fa-square-plus");
+                    }
+                }
+                else if (ddtl) {
+                    ddtl.classList.toggle("toggled");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

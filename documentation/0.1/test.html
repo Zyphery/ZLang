@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>test</title>
+        <style>
+            body {
+                background-color: black;
+                color: green;
+            }
+        </style>
+        <style id="content-style"></style>
+    </head>
+    <body>
+        <div id="content-container"></div>
+    </body>
+    <script>
+        async function loadHTMLContent(filePath, containerId, styleId) {
+            const container = document.getElementById(containerId);
+            const styleTag = document.getElementById(styleId);
+
+            try {
+                // Fetch HTML content using the Fetch API with 'blob' response type
+                const response = await fetch(filePath, { mode: 'no-cors' });
+                const blob = await response.blob();
+
+                // Create a FileReader to read the blob as text
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const htmlContent = reader.result;
+
+                    // Update the style tag with any styles from the loaded content
+                    const styleStart = htmlContent.indexOf('<style>');
+                    if (styleStart !== -1) {
+                        const styleEnd = htmlContent.indexOf('</style>', styleStart);
+                        const extractedStyles = htmlContent.substring(styleStart + '<style>'.length, styleEnd);
+                        styleTag.innerHTML = extractedStyles;
+
+                        // Update the content container with the remaining HTML content
+                        container.innerHTML = htmlContent.substring(styleEnd + '</style>'.length);
+                    } else {
+                        // If no styles are present, use the entire HTML content
+                        container.innerHTML = htmlContent;
+                    }
+
+                    // Log the loaded content to check if it's correctly loaded
+                    console.log(htmlContent);
+                };
+                reader.readAsText(blob);
+
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        loadHTMLContent('fp.html', 'content-container', 'content-style');
+    </script>
+</html>
