@@ -63,7 +63,7 @@
             background-color: transparent;
             color: #f0f0f0;
             overflow: hidden;
-            overflow-y: scroll;
+            overflow-y: overlay;
             flex: 100%;
         }
 
@@ -280,7 +280,7 @@
         <nav>
             <input type="text" placeholder="Search..." style="margin:0 1em 1em 1em;">
 
-            <div style="flex:100%; overflow:scroll">
+            <div style="flex:100%;overflow-x:hidden;overflow-y:overlay">
                 <ul id="navul">
                     <li>
                         <span class="caret">
@@ -442,7 +442,7 @@
                     // Your logic to handle HTML content here
                     // ...
 
-                    container.innerHTML = filePath + ' Loaded content: ' + htmlContent;
+                    container.innerHTML = htmlContent;
                 };
                 reader.readAsText(blob);
 
