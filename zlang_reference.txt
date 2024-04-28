@@ -1,0 +1,191 @@
+scope:
+    func out(arg = var):
+        .call("__out", .convert(arg, array))
+        end
+    
+    func in():
+        put .call("__in", 0)
+        end
+        
+    func len(arg = var):
+        put .call("__len", arg)
+        end
+    
+    func typeid(arg = var):
+        put .call("__typeid", arg)
+        end
+    
+    func typename(arg = var):
+        put .call("__typename", arg)
+        end
+    
+    func convert(from = var, to = var):
+        put .call("__convert", [from, to])
+        end
+
+    func istype(val = var, compare = var):
+        put .call("__istype", [val, compare])
+        end
+    
+    func range(start = var, end = var, step = var):
+        put .call("__range", [start, end, step])
+        end
+    
+    func any(arr = array[bool]):
+        put .call("__any", arr)
+        end
+    
+    func all(arr = array[bool]):
+        put .call("__all", arr)
+        end
+    
+    func tostring(arg = var):
+        put .call("__tostring", arg)
+        end
+    
+    func async(fun = func, arg = var):
+        put .call("async", fun, arg)
+        end
+    end
+
+scope string:
+    func len(str = string): int
+        put .len(str)
+        end
+
+scope math:
+    const pi = real(3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679): double
+    const e = real(2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274): double
+    const tau = real(6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359): double
+
+    func sin(x = real): real
+        if x >= 0.0:
+            if x < pi / 4.0:
+                put real(0.25)
+                end
+            else:
+                put real(0.75)
+                end
+        else if x < 0.0:
+            put real(-1.0)
+            end
+        else:
+            put real(0.0)
+            end
+        end
+    func cos(x = real): real
+        put sin(x - pi / 2.0)
+        end
+    func tan(x = real): real
+        put sin(x) / cos(x)
+        end
+
+### Test Class
+
+def test:
+    < 
+        M0: half, double, single | int, float, char     = single | float
+        M1: mutated, unmutated, staticable              = mutated 
+    >
+    
+
+def myClass:
+    <
+        mutA: variantA, variantB, variantC                      = variantA
+        mutB: variantA, variantB | altVariantA, altVariantB     = variantA | altVariantA
+        mutC: a, b, c, d, e | a, b, c, d | A, B, CD, E | g, h   = a | a | CD | h
+    >
+
+def DynamicType:
+    <
+        mut: real, int
+    >
+
+
+
+### Vector 2 class definition
+
+def vec2:
+
+    # mutations allowed
+
+    <
+        T: half, double, single
+    >
+
+
+    # member variables
+
+    x = real(0.0) : T
+    y = real(0.0) : T
+
+    # constructors
+
+    vec2(x = real, y = real):
+        end
+    
+    vec2(a = real):
+        x = a
+        y = a
+        end
+    
+    vec2():
+        x = real(0.0)
+        y = real(0.0)
+        end
+    
+    
+    # member function
+
+    .length() : real
+        len = math.sqrt(self.x * self.x + self.y * self.y)
+        put len
+        end
+
+
+    # static member function
+    
+    static .length(v = vec2) : real
+        len = math.sqrt(v.x * v.x + v.y * v.y)
+        put len
+        end
+    
+
+    # overator overload
+
+    op + (v = vec2) : vec2
+        super+(v)
+        put vec2(self.x + v.x, self.y + v.y)
+        end
+    
+    op - (v = vec2) : vec2
+        super-(v)
+        put vec2(self.x - v.x, self.y - v.y)
+        end
+
+    .normalize() : vec2
+        len = math.sqrt(self.x * self.x + self.y * self.y)
+        put len
+        end
+    
+    static .normalize(v = vec2) : vec2
+        len = math.sqrt(v.x * v.x + v.y * v.y)
+        put len
+        end
+    
+
+    .tostring(): string
+        out = string()
+        out += .tostring(self.x)
+        out += ", "
+        out += .tostring(self.y)
+        put out
+        end
+
+    static .tostring(v = vec2): string
+        out = string()
+        out += .tostring(v.x)
+        out += ", "
+        out += .tostring(v.y)
+        put out
+        end

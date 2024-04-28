@@ -1,0 +1,1049 @@
+zlang
+Zyphery's Programming Language
+
+Scripting language
+*intended for use with an engine
+
+
+
+###############################################################################
+### LANGUAGE RULES                                                          ###
+###############################################################################
+
+A. Basic Language Rules
+    1. Indentation
+        a. Keywords
+    2. Comments
+        a. Single-line
+        b. Multi-line
+    3. Statements
+        a. Concluding
+B. Syntax
+    1. Literals
+        a. Real literals
+        b. Int literals
+        c. Char literals
+    2. Types
+        a. Built-in
+        b. Standard lib
+    3. Code Scopes
+    4. Functions
+        a. Returning values
+        b. Ending early
+C. Concepts
+    1. Mutations
+        a. Usage and uses
+        b. Built-in mutations
+        c. Custom mutations
+    2. Classes
+        a. Class Definition
+        b. Class Declaration
+    3. Scope
+        a. Functions
+        b. Classes
+    4. Bitwise Operations
+        a. Operators
+D. Errors
+    1. Syntax Errors
+    2. Interpretation Errors
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+`Introduction`:
+
+In this documentation it will describe the rules, syntax, concepts, and provide
+the user with knowledge on how to use the language. It will provide code
+examples with plenty of comments, explanations to help understand the code,
+errors to show what may cause errors, and warnings on how to properly write valid
+code in ZLang.
+
+Code examples will look like this:
+
+`ZLang (filename.zlng)
+##
+This is a code block in ZLang in the file named `filename.zlng`
+##
+`
+
+Some code blocks may be hypothetical as to explain a concept or idea.
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Statements`:
+
+Statements are individual expressions or commands that carry out
+specific actions. The language defines the end of a statement by default as the
+end of a line or a newline character (\n). However, developers have the option
+to use a semicolon (;) to conclude statements, enabling multiple statements to
+exist on the same line.
+
+Default Statement Ending:
+Statements naturally conclude at the end of a line or with a newline character.
+This default behavior provides a clean and readable structure to the code.
+
+`ZLang
+# Example of statements ending at the end of lines
+v = real(42.0)  # A single statement
+.out(v)         # Another single statement
+`
+
+In the above example, each line represents a separate statement.
+
+Semicolon for Multiple Statements:
+ZLang allows developers to use a semicolon to explicitly terminate a statement,
+facilitating the placement of multiple statements on a single line.
+
+`ZLang
+# Example of multiple statements on the same line using semicolons
+a = 10; b = 20; c = a + b; .out(c)  # 4 statements
+.out("Hello"); .out("World!")       # 2 statements
+`
+
+In this example, semicolons separate individual statements, allowing them to
+coexist on a single line.
+
+The flexibility in statement termination enhances code readability and
+accommodates different coding styles.
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Scopes`:
+
+Scopes define the boundaries of code sections, ensuring proper encapsulation
+and organization. When indenting due to one of the keywords listed above, in
+the indentation section, a new scope is created.
+
+Function Scope:
+
+Functions in ZLang are defined using the "func" keyword, followed by the
+function name and parameters. The function body is indented to indicate
+the scope.
+
+`ZLang
+# Example of function scope
+func myFunction(param1 = var, param2 = var):
+    # Indented block for the function body
+    .out(param1, param2)
+    end  # End of the function scope
+`
+
+Class Definition Scope:
+
+Class definitions, initiated by the "def" keyword, encompass member variables,
+constructors, and methods. The class body is indented to denote the scope.
+
+`ZLang
+# Example of class definition scope
+def MyClass:
+    # Indented block for class member variables
+    memberVar = real(0.0)
+
+    # Constructor with indentation
+    MyClass():
+        memberVar = real(42.0)
+        end
+
+    # Method within the class
+    func myMethod():
+        .out(memberVar)
+        end
+`
+
+Conditional Scope (if-else):
+The "if" and "else" keywords define conditional scopes. Depending on the
+value of condition, different code will execute.
+
+`ZLang
+# Example of conditional scope
+if condition:
+    # Indented block for the "if" scope
+    .out("What's your name?")
+    userName = .in()
+    .out("Your name is $(yourName)")    
+else:
+    # Indented block for the "else" scope
+    .out("How old are you?")
+    userAge = .in() as int # Convert user input to an integer
+    .out("You are $(userAge) years old.")
+`
+
+These examples demonstrate the use of scopes in various contexts within ZLang.
+Proper indentation is crucial for maintaining code clarity and ensuring the
+correct execution of statements within a specific scope.
+
+`ZLang
+a = int(3)
+b = int(7)
+
+if a < b:
+    c = int(9)
+    .out(c)
+else:
+    # This part of the code will error.
+    # because c is not a part of this scope
+    .out(c)
+`
+
+This example shows how variables are related to the scope level they are in.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Indenting`:
+
+Indentation is a crucial aspect of the language syntax, providing structure and
+delineating scopes. The following keywords necessitate indentation due to the
+creation of new scopes:
+
+"func"
+"def"
+"scope"
+"op"
+"if"
+"else"
+"catch"
+"iterate"
+"match"
+
+When using any of these keywords, developers must indent the subsequent code to
+define the scope associated with the keyword. Proper indentation enhances code
+readability and ensures the correct interpretation of the code structure.
+
+`ZLang
+# Example of indentation in ZLang
+condition = true
+
+if condition:
+    # Indented block for the "if" scope
+    .out("Hello from ZLang!")
+else:
+    # Indented block for the "else" scope
+    .out("What a wonderful world!")
+`
+
+In the example, the "if" and "else" scopes are defined by the indentation
+following the respective keywords.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Comments`:
+
+Comments are essential for adding explanations, clarifications, or
+notes within the code. The language supports both single-line and multi-line
+comments.
+
+Comments use the hash (#) symbol.
+Single-line comments use one hash (#) symbol, all text after the hash symbol is
+ignored and will not be interpreted until a newline symbol (\n) is reached.
+Multi-line comments use two hash (##) symbols. They require a beginning, and an
+end, they are not affected by the newline symbol (\n) like in single-line
+comments. If a multi-line comment is started but lacks an end, the comment will
+run until the EOF (End of File).
+
+Here are some examples of both single-line and multi-line comments:
+
+`ZLang
+##
+This function takes in a name as a string
+and outputs a greeting to the console.
+##
+
+func mySpecialFunction(name = string):
+    # Use the standard library out function to print to the console
+    .out("Hello $(name)!")
+
+    if name == "Amy":
+        ## If the person's name is "Amy"
+        output a special message ##
+
+        .out("Amy is a very special person!")
+`
+
+Special Syntax for Inline Comments:
+ZLang supports a special syntax for inline comments within a line of code,
+allowing comments to be seamlessly integrated without breaking the syntax.
+
+
+a ## This comment is within code, but doesn't break it! ## = real(0.75): double
+Note on Multi-Line Comments:
+If a multi-line comment starts but lacks an end, the comment will never begin.
+The order of comment formation is crucial, especially when dealing with an odd
+number of multi-line comments. In such cases, the last one will become a
+regular single-line comment.
+
+This comment system provides developers with flexibility in documenting their
+code effectively.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Literals`:
+
+Literals represent constant values within the code. The language
+supports string, integer, and real literals, each with specific syntax.
+
+String Literal:
+A string literal is defined by enclosing text within double quotes (").
+It allows developers to represent sequences of characters.
+
+`ZLang
+# String literal
+"This is a string literal!"
+`
+
+Integer Literal:
+An integer literal is represented by a whole number without a decimal point.
+
+`ZLang
+# Integer literal
+457
+`
+
+Real Literal:
+A real literal is represented by a number, and if a decimal is used, the
+literal automatically becomes a real. Precision can be specified by
+encapsulating the literal with its types and defining mutations.
+
+`ZLang
+# 64-bit precision real
+real(0.33333333): double
+
+# 16-bit precision real
+real(5678.1234): half
+`
+
+In the example:
+
+The first real literal is explicitly defined as a double type with
+64-bit precision. The second real literal is specified as a half type with
+16-bit precision.
+
+Note on Number Literals:
+When numbers are written out, they are interpreted as strings,
+ensuring "full" precision.
+
+Char Literal:
+Character literals are defined using single quotes ('). They represent
+individual characters.
+
+`ZLang
+# Char literal
+c = char('a')
+`
+
+In this example, variable c is assigned the character literal 'a'.
+
+Note on Char Literal:
+A char literal must be enclosed in single quotes, and attempting to use an
+unknown variable or expression within char literals will result in an error.
+
+ZLang provides a straightforward way to define various literals with explicit
+precision and representation.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+`Types`:
+
+There are two ways to infer types but only one is recommended. To specify a
+variable type you can use the typename as a function-like with the value as a
+parameter. This is so that the interpreter interprets the value and type that
+the programmer wants to use. The other way is to use a literal value and set
+it directly to a variable
+
+`ZLang
+# The proper and recommended way to set types
+
+# Declare a variable 'count' of type integer with the value 5.
+count = int(5)
+
+# Declare a variable 'total' of type real with the value 10.5.
+total = real(10.5)
+
+# Declare a variable 'message' of type string with the specified content.
+message = string("Hello, ZLang!")
+
+# The unrecommended way to set types
+
+# Declare a variable 'health' of type interpreted as int of value 100
+health = 100
+
+# Declare a variable 'balance' of type interpreted as real of value 167.35
+balance = 167.35
+
+# Declare a variable 'name' interpreted as type string
+# with the value "Jacob Meyers"
+name = "Jacob Meyers"
+`
+
+
+Each variable in the example is using a built-in type. Here is a list of all
+built-in types in ZLang:
+
+"var"
+"real"
+"int"
+"uint"
+"char"
+"string"
+"bool"
+"enum"
+"array"
+"dict"
+
+Each type has it's own unique mutations or variants.
+
+`var`: Any type can be assigned to a var type. Depending on the literal
+assigned to it.
+
+# myVar is assigned to the value of 0.6 making it a real type
+myVar = var(0.6)
+
+`real`: A real type is a floating point type, allowing for decimal values.
+By default it is a 64-bit number.
+`int`: An integer type, which does not allow for decimal numbers.
+By default it is a 64-bit number.
+`uint`: Same as int but is only unsigned, meaning it only allows for positive
+numbers.
+`char`: A character type, which represents a single character.
+By default it only allows UTF-8 symbols as an 8-bit word.
+`string`: A textual type holds a sequence of characters or `char`s. The string
+can hold up to a maximum of 65536 characters.
+By default the string only holds UTF-8 characters.
+`bool`: Is a boolean type, true or false are the only values it accepts. Most
+langauges support using 1 or 0 to represent true or false, ZLang uses that
+system as well.
+`enum`: Is a named list that by is interpreted as an integer constant. The
+byte size of the type is determined after interpretation.
+`array`: A base-collection of elements that can be indexed by value or key.
+By default the array can hold any type, but can be defined to hold only A
+set amount of types.
+An array can be defined using this syntax:
+
+`ZLang
+# Define an array that holds only the type `int`
+myArr = array: int[
+    1, 2, 5, 7, 9
+]
+`
+
+`dict`: A base-collection of elements that uses key-value pairs.
+By default the key can be any type, but can be set to use a set of types.
+A dict can be defined using this syntax:
+
+`ZLang
+# Define a dictionary
+myDict = dict: value=any{
+    key1: int(45)
+    key2: real(0.6)
+    key3: string("myString")
+}
+
+
+# Define a dictionary
+secondDict = dict: key=string, value=any{
+    key1: int(45)
+    key2: real(0.6)
+    key3: string("myString")
+}
+`
+
+Types can be changed using mutations. Mutations can only be applied when
+initializing a type or new variable.
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Mutations`:
+
+Mutations refine a type into a more specific variant.
+Using colons (:), mutations can be applied to a type. Order of mutations does
+not matter, and if no mutations are specified, the default type is used.
+
+Example:
+
+`ZLang
+# Without mutations
+myVarWithoutMutations = real(3.14159)       # Uses the default type real
+
+# With mutations
+myVarWithMutations = real(8.421): double    # Applies the mutation double
+`
+
+In this example:
+`myVarWithoutMutations` is of type real without any mutations.
+`myVarWithMutations` is of type real with the mutation double. This gives it
+double precision, or 128-bit floating-point precision.
+This illustrates how mutations refine a type, allowing developers to customize
+and specialize types according to their requirements.
+
+
+`Mutations for Classes`:
+In ZLang, mutations provide a powerful mechanism for refining the
+characteristics of classes. When defining a class, mutations can be specified
+within angle brackets (<>). These mutations define the variations or
+specialized features that can be applied to instances of the class.
+
+WORK IN PROGRESS, FEATURES MAY BE MISSING
+
+Example:
+
+`ZLang
+# Mutation `mode` is not being used, as there is no implementation for it yet
+
+def MyCustomClass:
+    <
+        precision: double, single   # Mutations for precision
+        mode: static, dynamic       # Mutations for mode
+    >
+
+    # Member variable using the specified precision mutation
+    data = real(0.0): precision
+
+    MyCustomClass(data = real):
+        end
+`
+
+In this example:
+
+`MyCustomClass` is a class that allows mutations, defining variations in
+precision and mode.
+The mutations Precision and Mode are specified within angle brackets.
+The member variable data is defined with the Precision mutation, allowing
+instances of the class to use different precision types.
+
+Defining Mutations:
+Mutations are defined within angle brackets (<, >) after the class name.
+Specifying Mutations:
+
+Specifying Mutations:
+Within the angle brackets, different variations or features (mutations) are
+listed.
+
+Applying Mutations:
+Mutations can be applied to member variables or methods inside the class body.
+
+Example Use:
+
+In the example, the member variable data is defined with the Precision
+mutation, allowing users to choose between double and single precision.
+This approach allows developers to create versatile and adaptable classes that
+cater to specific needs by providing a flexible way to define variations
+within the class itself.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Classes`:
+
+Classes in ZLang are defined using the keyword "def" followed by the class name
+and a colon (:). If you wish to allow mutations, you can specify them within
+open and close angle brackets (<, >). Inside these angle brackets, you define
+the names of mutations along with their potential variants.
+
+Below is an example illustrating a class with two different mutations:
+
+`ZLang
+def MyCoolClass:
+    <
+        myMut: real, int                    = real
+        extraMut: varA, varB | altA, altB   = varA | altB
+    >
+
+    myMember = myMut(0)
+
+    MyCoolClass(myMember):
+        end
+`
+
+In this example:
+
+myMut mutation allows only the types real or int. It defaults to real.
+extraMut mutation allows varA or varB and must include either altA or altB.
+
+The pipe symbol (|) signifies an inclusive choice, indicating that one variant
+from each list is required.
+
+Understanding the Pipe Symbol (|):
+The pipe symbol serves as a separator within mutation declarations, indicating
+alternative options. Specifically:
+
+varA, varB: Represents a choice between varA and varB.
+altA, altB: Represents a separate choice between altA and altB.
+When combined with the pipe symbol (|):
+
+varA | altA: Implies that one of varA or altA must be selected.
+varB | altB: Implies that one of varB or altB must be selected.
+
+In summary, the pipe symbol facilitates a clear and explicit way to express
+that selections must be made from different lists, ensuring that the mutation
+is precisely specified with required variants.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+`Class Declaration`:
+
+A class declaration is a way to acknowledge the existence of a class
+without providing its full body. This allows references to be made to the
+class, and the complete definition must be provided at a later point.
+Failure to define the body later will result in an interpreter error.
+
+Declared Class Example:
+
+`ZLang
+def MyClass  # Declared class
+
+def MyBetterClass: # Defined class
+    <>  # Mutations
+
+    # Constructor
+    MyBetterClass():
+        end
+`
+
+In this example:
+
+MyClass is a declared class, signaling its existence without defining the body.
+MyBetterClass is a class that allows mutations, indicated by the open and close
+angle brackets (<, >). The constructor for MyBetterClass is defined with an
+empty body, indicating that further details must be provided.
+
+Declaration Purpose:
+`def MyClass`: Declares the existence of the class without a body.
+`def MyBetterClass`: Declares a class, and the body must be defined.
+
+Future Definition:
+The full definition of a class declared without a body, like MyClass, must be
+provided later in the code. This approach helps in organizing and structuring
+the code, allowing for clear references to classes before their detailed
+implementations are provided.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+`Warnings and Errors`:
+
+This language is interpreted, meaning that it is executed line by line. This
+system allows for some interesting features, but also comes with some
+downsides. One of them is it's much more prone to errors. The interpreter
+also provides warnings, which are intended to help developers avoid mistakes
+and keep the workspace flow clean.
+
+Here are some examples that cause warnings:
+
+`ZLang
+myVar = 0.5     # Warning Wx01: Not recommended to use literals to define types
+`
+
+Here are some examples that cause errors:
+
+`ZLang
+#
+func unindentedFunc():
+.out("myFunction called!")  # Error Ex01: Invalid indentation
+
+func bodylessFunc():        # Error Ex03: Function missing body
+
+cond = true
+if cond:
+    c = real(5.3)
+else:
+    .out(c)                 # Error Ex05: Undefined variable
+
+myVar = invalidType("q")    # Error Ex06: Unidentified type
+`
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+#######################################################################
+### TYPES                                                           ###
+#######################################################################
+
+### BUILT-IN TYPES
+Type name       |   Mutations                       |   rust equivelant
+-----------------------------------------------------------------------
+var             |   -                               |   -
+real            |   half / double / single          |   f64
+int             |   short / half / double           |   i64
+uint            |   short / half / double           |   u64
+char            |   unicode                         |   i8
+string          |   char / unicode                  |   String
+bool            |   -                               |   bool
+enum            |   -                               |   enum
+array           |   -                               |   [T; N]
+dict            |   -                               |   HashMap<K, V>
+
+
+
+### STRUCTURES
+Type name       |   Mutations
+-----------------------------------------------------------------------
+object          |   -
+color           |   opaque / transparent, half
+vec2            |   half
+vec3            |   half
+vec4            |   half
+mat2            |   half
+mat3            |   half
+mat4            |   half
+aabb            |   vec2 / vec3 / vec4, half
+
+
+
+#######################################################################
+### KEYWORDS                                                        ###
+#######################################################################
+
+Keywords        |   Use
+-----------------------------------------------------------------------
+func            |   begin function definition
+def             |   begin class definition
+op              |   overrides operator for a class
+scope           |   begin namespace
+-----------------------------------------------------------------------
+include         |   include file into the current script
+use             |   simplify references from a scope
+super           |   calls a parent class function
+-----------------------------------------------------------------------
+static          |   declares a function or variable as static
+const           |   define variable as a constant
+-----------------------------------------------------------------------
+iterate         |   replaces a for and while loop
+match           |   begin switch statement
+catch           |   tries and catches an error
+pass            |   in a loop, end the current iteration
+-----------------------------------------------------------------------
+put             |   append to the output of a function
+end             |   conclude function or scope definition, or finish iteration of a loop
+from            |   sets a variable as index for a loop
+as              |   tries to convert a variable into a different type
+-----------------------------------------------------------------------
+if              |   conditional statement
+else            |   unless followed by an "if", this is the final to an if statement
+-----------------------------------------------------------------------
+self            |   references the current object in a class
+null            |   value of 0 or no reference
+true            |   value of 1 or true for booleans
+false           |   value of 0 or false for booleans
+-----------------------------------------------------------------------
+not             |   bitwise not
+and             |   bitwise and
+or              |   bitwise or
+xor             |   bitwise xor
+
+
+
+#######################################################################
+### OPERATORS                                                       ###
+#######################################################################
+
+Operators       |   Default use
+----------------------------------------------------------- OVERRIDABLE
++a              |   Unary plus
+-a              |   Unary minus
+~a              |   Unary bitwise invert
+----------------------------------------------------------- OVERRIDABLE
+!a              |   Bitwise not
+a & b           |   Bitwise and
+a | b           |   Bitwise or
+a ^ b           |   Bitwise xor
+------------------------------------------------------- NOT OVERRIDABLE
+not a           |   Boolean not
+a and b         |   Boolean and
+a or b          |   Boolean or
+a xor b         |   Boolean xor
+----------------------------------------------------------- OVERRIDABLE
+a ** b          |   Exponentiation
+----------------------------------------------------------- OVERRIDABLE
+a << b          |   Bitshift left
+a >> b          |   Bitshift right
+----------------------------------------------------------- OVERRIDABLE
+a + b           |   Addition
+a - b           |   Subtraction
+a * b           |   Multiplication
+a / b           |   Division
+a % b           |   Modulous
+----------------------------------------------------------- OVERRIDABLE
+a = b           |   Assignment
+a += b          |   Assignment addition
+a -= b          |   Assignment subtraction
+a *= b          |   Assignment multiplication
+a /= b          |   Assignment division
+----------------------------------------------------------- OVERRIDABLE
+a == b          |   Equality
+a != b          |   Inequality
+a < b           |   Less than
+a > b           |   Greater than
+a <= b          |   Greater than or equal to
+a >= b          |   Greater than or equal to
+------------------------------------------------------- NOT OVERRIDABLE
+a if b else c   |   Ternary operator
+
+
+
+#######################################################################
+### BUILT-IN FUNCTIONS                                              ###
+#######################################################################
+
+Function name   |   Params          |   Return type
+-----------------------------------------------------------------------
+.call           |   String          |   int
+.out            |   args...         |   -
+.in             |   -               |   string
+.len            |   var             |   int
+.typeid         |   var             |   int
+.typename       |   var             |   string
+.convert        |   var, var        |   var
+.istype         |   var, var        |   bool
+.infinity       |   -               |   real
+.range          |   var, var, var   |   array
+.any            |   array[bool]     |   bool
+.all            |   array[bool]     |   bool
+.tostring       |   var             |   string
+.async          |   func, args...   |   int
+
+
+
+### BUILT-IN STRING FUNCTIONS
+Function name       |   Params              |   Return type
+-----------------------------------------------------------------------
+string.len          |   string              |   int
+string.toupper      |   char                |   char
+string.tolower      |   char                |   char
+string.capitalize   |   string              |   string
+string.startswith   |   string, string      |   bool
+string.endswith     |   string, string      |   bool
+string.find         |   string, string      |   int
+string.split        |   string, int         |   array[string]
+
+
+
+### BUILT-IN MATH FUNCTIONS
+Function name   |   Params              |   Return type
+-----------------------------------------------------------------------
+math.radians    |   real                |   real
+math.degrees    |   real                |   real
+math.sin        |   real                |   real
+math.cos        |   real                |   real
+math.tan        |   real                |   real
+math.asin       |   real                |   real
+math.acos       |   real                |   real
+math.atan       |   real, real          |   real
+math.atan2      |   real, real          |   real
+math.sinh       |   real                |   real
+math.cosh       |   real                |   real
+math.tanh       |   real                |   real
+math.asinh      |   real                |   real
+math.acosh      |   real                |   real
+math.atanh      |   real                |   real
+math.floor      |   real                |   real
+math.ceil       |   real                |   real
+math.round      |   real                |   real
+math.abs        |   real                |   real
+math.sqrt       |   real                |   real
+math.ln         |   real                |   real
+math.log2       |   real                |   real
+math.log10      |   real                |   real
+math.pow        |   real, real          |   real
+math.sqr        |   real                |   real
+math.exp        |   real                |   real
+math.exp2       |   real                |   real
+math.mod        |   real, real          |   real
+math.min        |   real, real          |   real
+math.min        |   array[real]         |   real
+math.max        |   real, real          |   real
+math.max        |   array[real]         |   real
+math.clamp      |   real, real, real    |   real
+math.step       |   real, real          |   real
+math.smoothstep |   real, real, real    |   real
+math.fract      |   real                |   real
+math.trunc      |   real                |   real
+math.interp     |   real                |   real
+math.isnan      |   real                |   bool
+math.isinf      |   real                |   bool
+
+
+
+### BUILT-IN DATE FUNCTIONS
+Function name   |   Params              |   Return type
+-----------------------------------------------------------------------
+date.today      |   -                   |   date
+date.epoch      |   int                 |   date
+
+
+
+#######################################################################
+### SCRIPT EXAMPLE                                                  ###
+#######################################################################
+
+include usr/lib/std.zlng
+use zstd
+
+# This is the vector class
+
+def vector:
+    x = real(0.0)
+    y = real(0.0)
+    z = real(0.0)
+
+    ## It holds members:
+    x, y, and z as all real types ##
+
+
+    # Init function
+
+    vector(x, y, z):
+        end
+    
+
+    # Member function returns the length of the class vector
+    .length():
+        out sqrt(sqr(x) + sqr(y) + sqr(z))
+
+
+func main():
+    # Create a variable of type vector with values of 1, 3, and 2.5
+
+    v = vector(1.0, 3.0, 2.5)
+    
+    # Then print it's length
+    
+    .out(v.length())
+
+
+
+#######################################################################
+### NAMESPACE EXAMPLE                                               ###
+#######################################################################
+
+scope zstd/math:
+    const pi = real(3.141592653589793) : double
+    const tau = real(6.283185307179586) : double
+    const e = real(2.718281828459045) : double
+
+    iterate i .range(0, 100, 1):
+        .out(i)
+        end
+    
+    iterate j .range(0, 1, real(0.01) : double):
+        .out(j)
+        end
+    
+
+    func sin(x = real : double): real
+        put x
+        end
+
+
+
+#######################################################################
+### ERRORS & WARNINGS                                               ###
+#######################################################################
+
+Errors:
+
+Ex01: Invalid indentation
+
+`ZLang (Ex01.zlng)
+include usr/lib/std.zlng
+use zstd
+
+func outputHelloWorld():
+.out("Hello world!)                 # Ex01
+
+def person:
+    name = string
+    age = int
+
+    person():
+    end                             # Ex01
+`
+
+Ex02: Invalid Syntax
+
+`ZLang (Ex02)
+def car                             # Ex02
+    model = string
+    year = int
+
+    car(model, year)                # Ex02
+        end
+`
+
+Ex03: Function missing body
+
+`ZLang (Ex03.zlng)
+func petDog():
+                                    # Ex03
+
+func petCat():
+                                    # Ex03
+`
+
+Ex04: Function already exists
+
+`ZLang (Ex04.zlng)
+include usr/engine.zlng
+
+func create(index = int):
+    engine.createObject(index)
+    end
+
+func create(id = int):              # Ex04
+    put engine.findObject(id)
+    end
+
+`
+
+Ex05: Undefined variable
+
+`ZLang (Ex05.zlng)
+`
+
+Ex06: Unidentified type
+
+`ZLang (Ex06.zlng)
+
+def customType
+
+varA = customType()
+varB = unknownType()                # Ex06
+`
+
+Ex07: Unidentified scope/class
+Ex08: Unidentified function
+Ex09: Type not accepted
+Ex0A: Filepath not found
+Ex0B: Scope name does not exist
+Ex0C: Invalid operator
+Ex0D: Missing if
+Ex0E: Invalid mutation
+Ex0F: Too many mutations
+Ex10: Invalid index
+Ex11: Invalid key
+Ex12: Out of range
+Ex13: Cannot modify constants
+Ex14: Cannot convert type
+
+Warnings:
+
+Wx01: Not recommended to use literals to define variable types
+Wx02: If class does not have mutations, the `<>` can be removed from definition
+Wx03: Scope name is not used, remove it to save performance
+Wx04: File is not used, remove it to save performance
+Wx05: Variable is not used
+Wx06: Constant is not used
+Wx07: Function is not used

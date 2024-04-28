@@ -3,18 +3,226 @@
     <head>
         <meta charset="UTF-8">
         <title>rules.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/prism.min.js"></script>
         <style>
+            code {
+                white-space: pre-line;
+            }
         </style>
     </head>
     <body>
-        <h1>Indentation</h1>
-        <h1>Comments</h1>
-        <h1>Syntax</h1>
-        <h1>Statements</h1>
-        <h1>Literals</h1>
-        <h1>Types</h1>
-        <h1>Functions</h1>
-        <h1>Mutations</h1>
-        <h1>Classes</h1>
+        <section>
+            <h1>Indentation</h1>
+        </section>
+        
+        <section>
+            <h1>Comments</h1>
+            <article>
+                <h2>Single-Line</h2>
+                <h2>Multi-Line</h2>
+                <aside>
+                    <p>Additional information about comments...</p>
+                </aside>
+            </article>
+        </section>
+        
+        <section>
+            <h1>Syntax</h1>
+        </section>
+        
+        <section>
+            <h1>Statements</h1>
+        </section>
+        
+        <section>
+            <h1>Literals</h1>
+            <article>
+                <h2>Numbers</h2>
+                <h2>Strings</h2>
+            </article>
+        </section>
+        
+        <section>
+            <h1>
+                Types
+            </h1>
+            <p>
+                In ZLang, types play a crucial role in defining the nature of variables and data structures.
+                They bring a sense of clarity and precision to the language, allowing developers to specify the characteristics of their data.
+                ZLang supports a variety of types, including fundamental types like integers, real numbers, and strings.
+                Understanding how to work with these types is essential for effective programming in ZLang.
+            </p>
+            <article>
+                <h2>
+                    Variables
+                </h2>
+                <p>
+                    Variables are containers for storing data values.
+                    In ZLang, each variable must be explicitly assigned a type during its declaration.
+                    This ensures that the interpreter can allocate the correct amount of memory and perform operations with precision.
+                    For example:
+                </p>
+                <code>
+                    # Declare and initialize an integer variable
+                    myVar = int(42)
+
+                    # Declare and initialize a real variable with mutation
+                    myReal = real(3.14) : double
+                </code>
+                
+
+                <h2>
+                    Defining a Type
+                </h2>
+
+                <p>
+                    In ZLang, defining a type for variables involves specifying the type and any necessary mutations during their declaration.
+                    This is particularly important for achieving precision and clarity in variable assignments.
+                    Let's delve into the concept using the real type as an example.
+                </p>
+
+                <code>
+                    # Declare and initialize a real number
+                    a = real(0.78)
+                </code>
+
+                <p>
+                    Here, a is a variable of type real, representing a floating-point number.
+                    The <b>real(0.78)</b> part is a type constructor, and it serves two main purposes:
+                </p>
+
+                <ul>
+                    <li><p>
+                        <b>Type Specification:</b>
+                        The <b>real</b> keyword indicates that the variable <b>a</b> is of the real number type.
+                        In ZLang, various types such as <b>int</b>, <b>string</b>, and custom user-defined types can be used.
+                    </p></li>
+                    <li><p>
+                        <b>Initialization:</b>
+                        The value <b>0.78</b> is the initial value assigned to the variable.
+                        This part ensures that a starts with the specified numeric value.
+                    </p></li>
+                </ul>
+                
+                <p>
+                    The <b>real(0.78)</b> construct acts as a concise way to declare a variable with a specific type and initial value.
+                    It not only communicates the type of data expected but also initializes the variable with the desired value.<br>
+                    For users familiar with other programming languages, this syntax might resemble type casting or conversion.
+                    However, in ZLang, it is a combination of type specification and initialization in a single expression.
+                </p>
+
+                <b>Explanation:</b>
+
+                <ul>
+                    <li><p>
+                        <b>real</b>: Specifies the type of the variable as a real number.
+                    </p></li>
+                    <li><p>
+                        <b>(0.78)</b>: Initializes the variable with the value 0.78.
+                    </p></li>
+                </ul>
+
+                <p>
+                    The combination of type specification and initialization in a single line simplifies the declaration process.
+                    Users can easily communicate the intended type and starting value for their variables, contributing to code clarity and conciseness.
+                </p>
+
+                <h2>
+                    Int
+                </h2>
+                <p>
+                    Integers in ZLang are fundamental numeric types used for representing whole numbers.
+                    They can be initialized and mutated based on the desired precision:
+                </p>
+                <code>
+                    # Declare and initialize an integer
+                    a = int(10)
+
+                    # Declare and initialize an integer with mutation
+                    b = int(20) : short
+                </code>
+                <p>
+                    Here, <b>myInt</b> is a regular integer, while <b>myMutatedInt</b> is mutated to have short precision.
+                    The ability to mutate types adds flexibility to variable declarations.
+                </p>
+                
+                <h2>
+                    Real
+                </h2>
+                <p>
+                    Real numbers in ZLang represent floating-point values.
+                    Developers can control the precision of real numbers through mutations:
+                </p>
+                <code>
+                    # Declare and initialize a real number
+                    myReal = real(3.14)
+
+                    # Declare and initialize a real number with double precision
+                    myDouble = real(2.718) : double
+                </code>
+                <p>
+                    The <b>real</b> type supports mutations like <i>double</i> or <i>single</i>, allowing developers to fine-tune the precision based on their requirements.
+                </p>
+
+                <h2>
+                    String
+                </h2>
+                <p>
+                    Strings are sequences of characters in ZLang.
+                    They are defined using quotes and can be manipulated using built-in string functions:
+                </p>
+                <code>
+                    include usr/std.zlng # Include the standard library for string tools
+                    use zstd # Use the scope or namespace zstd (The main scope of the std.zlng library)
+                    
+                    # Declare and initialize a string
+                    myString = "Hello, World!"
+
+                    # Use a string function to get the length
+                    stringLength = string.len(myString)
+                </code>
+                <p>
+                    In this example, myString is a string variable, and the string.len function is applied to determine its length.
+                    To use some string functions, you must include the standard library for string tools, and use the scope or namespace <b>zstd</b> to access the functions.
+                    The <b>zstd</b> namespace is the main scope of the <b>std.zlng</b> library.
+                </p>
+            </article>
+            <p>
+                Understanding types, variables, and how to define custom types is foundational for ZLang programming.
+                Explicit type declarations enhance code readability and provide a clear structure for data representation.
+                The ability to mutate types adds a layer of flexibility, allowing developers to tailor their data types to specific needs.
+            </p>
+        </section>
+        
+        <section>
+            <h1>Functions</h1>
+            <article>
+                <h2>Returning Values</h2>
+                <aside>
+                    <p>Additional notes about returning values...</p>
+                </aside>
+            </article>
+        </section>
+        
+        <section>
+            <h1>Mutations</h1>
+        </section>
+        
+        <section>
+            <h1>Classes</h1>
+            <article>
+                <h2>Definitions</h2>
+                <h2>Declarations</h2>
+                <h2>Member Variables</h2>
+                    <article>
+                        <h3>Constants</h3>
+                    </article>
+                <h2>Member Functions</h2>
+                    <article>
+                        <h3>Non-Static Functions</h3>
+                        <h3>Static Functions</h3>
+                    </article>
+            </article>
+        </section>
     </body>
 </html>

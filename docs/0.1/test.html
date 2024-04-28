@@ -1,58 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>test</title>
-        <style>
-            body {
-                background-color: black;
-                color: green;
-            }
-        </style>
-        <style id="content-style"></style>
-    </head>
-    <body>
-        <div id="content-container"></div>
-    </body>
-    <script>
-        async function loadHTMLContent(filePath, containerId, styleId) {
-            const container = document.getElementById(containerId);
-            const styleTag = document.getElementById(styleId);
-
-            try {
-                // Fetch HTML content using the Fetch API with 'blob' response type
-                const response = await fetch(filePath, { mode: 'no-cors' });
-                const blob = await response.blob();
-
-                // Create a FileReader to read the blob as text
-                const reader = new FileReader();
-                reader.onload = function () {
-                    const htmlContent = reader.result;
-
-                    // Update the style tag with any styles from the loaded content
-                    const styleStart = htmlContent.indexOf('<style>');
-                    if (styleStart !== -1) {
-                        const styleEnd = htmlContent.indexOf('</style>', styleStart);
-                        const extractedStyles = htmlContent.substring(styleStart + '<style>'.length, styleEnd);
-                        styleTag.innerHTML = extractedStyles;
-
-                        // Update the content container with the remaining HTML content
-                        container.innerHTML = htmlContent.substring(styleEnd + '</style>'.length);
-                    } else {
-                        // If no styles are present, use the entire HTML content
-                        container.innerHTML = htmlContent;
-                    }
-
-                    // Log the loaded content to check if it's correctly loaded
-                    console.log(htmlContent);
-                };
-                reader.readAsText(blob);
-
-            } catch (error) {
-                console.error(error.message);
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZLang Lexer and Color Coder</title>
+    <style>
+        .code {
+            font-family: monospace;
+            white-space: pre;
+            tab-size: 4;
         }
 
-        loadHTMLContent('fp.html', 'content-container', 'content-style');
-    </script>
+        .keyword {
+            color: blue;
+        }
+
+        .operator {
+            color: purple;
+        }
+
+        .literal {
+            color: green;
+        }
+
+        .variable {
+            color: #ff4500; /* OrangeRed */
+        }
+
+        .function {
+            color: #8b008b; /* DarkMagenta */
+        }
+
+        .scope {
+            color: brown;
+        }
+
+        .class {
+            color: darkblue;
+        }
+
+        .type {
+            color: #a52a2a; /* Brown */
+        }
+    </style>
+</head>
+<body>
+
+<div class="code">
+    include usr/lib/std.zlng
+    use zstd
+    
+    # Define a simple vector class with operator overloading
+    def Vector:
+        x = real(0.0)
+        y = real(0.0)
+    
+        vec(x = real, y = real):
+            end
+    
+        op + (v = Vector) : Vector
+            put Vector(self.x + v.x, self.y + v.y)
+            end
+    
+        .tostring(): string
+            put "Vector(" + string(self.x) + ", " + string(self.y) + ")"
+            end
+    
+    
+    # Function to calculate the factorial of a number
+    func factorial(n = int) : int
+        if n <= 1:
+            put 1
+        else:
+            put n * factorial(n - 1)
+        end
+    
+    
+    # Scope with a function and a declared class
+    scope ExampleScope:
+        func greet():
+            .out("Hello from ExampleScope!")
+            end
+    
+        def Circle:
+            radius = real(0.0)
+    
+            Circle(radius = real):
+                end
+    
+            .area(): real
+                put math.pi * self.radius * self.radius
+                end
+    
+    
+    # Main function demonstrating the features
+    func main():
+        # Creating and using vectors
+        v1 = Vector(2.0, 3.0)
+        v2 = Vector(1.0, 1.0)
+        result = v1 + v2
+        .out(result.tostring())
+    
+        # Using recursion to calculate factorial
+        fact_result = factorial(5)
+        .out("Factorial of 5: " + string(fact_result))
+    
+        # Using functions and classes from the ExampleScope
+        ExampleScope.greet()
+        my_circle = ExampleScope.Circle(radius=5.0)
+        area = my_circle.area()
+        .out("Area of the circle: " + string(area))
+    
+        end
+</div>
+
+<!-- can you build me a lexer and color coder for this language in html using javascript? -->
+<!-- It should be able to color code the individual tokens like keywords, operators, literals, variable names, function names, scope names, class names, types, etc... I want it to find all divs with the class tag of "code", and then interpret its innerHTML or text, keep newlines, keep indentation, etc... Comments are important! Remember how comments work, a comment is started by # and everything after it is in the comment until a newline. A multiline comment is started with ## and everything after regardless of newline is comment until it finds another ## -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        colorCodeZLang();
+    });
+
+    function colorCodeZLang() {
+        const codeDivs = document.querySelectorAll('.code');
+        codeDivs.forEach(codeDiv => {
+            const code = codeDiv.innerText || codeDiv.textContent;
+            const coloredCode = tokenizeAndColorCode(code);
+            codeDiv.innerHTML = coloredCode;
+        });
+    }
+
+    function tokenizeAndColorCode(code) {
+        const keywords = ['def', 'func', 'scope', 'end', 'if', 'else', 'iterate', 'include', 'use', 'put', 'op'];
+        const operators = ['+', '-', '*', '/', '=', ':'];
+        const regex = new RegExp(`\\b(${keywords.join('|')})\\b|(${operators.map(op => `\\${op}`).join('|')})|\\b([\\d.]+)\\b|\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b`, 'g');
+        return code.replace(regex, (match, keyword, operator, literal, variable) => {
+            if (keyword) return `<span class="keyword">${match}</span>`;
+            if (operator) return `<span class="operator">${match}</span>`;
+            if (literal) return `<span class="literal">${match}</span>`;
+            if (variable) return `<span class="variable">${match}</span>`;
+            return match; // No match found
+        });
+    }
+</script>
+
+</body>
 </html>
