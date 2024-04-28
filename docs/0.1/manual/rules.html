@@ -11,218 +11,202 @@
         </style>
     </head>
     <body>
+        <h1>Basic Language Rules</h1>
+        <p>
+            ZLang has some complex rules that are not immediately obvious. These rules are intended to
+        </p>
         <section>
-            <h1>Indentation</h1>
-        </section>
-        
-        <section>
-            <h1>Comments</h1>
-            <article>
-                <h2>Single-Line</h2>
-                <h2>Multi-Line</h2>
-                <aside>
-                    <p>Additional information about comments...</p>
-                </aside>
-            </article>
-        </section>
-        
-        <section>
-            <h1>Syntax</h1>
-        </section>
-        
-        <section>
-            <h1>Statements</h1>
-        </section>
-        
-        <section>
-            <h1>Literals</h1>
-            <article>
-                <h2>Numbers</h2>
-                <h2>Strings</h2>
-            </article>
-        </section>
-        
-        <section>
-            <h1>
-                Types
-            </h1>
+            <h2>Indentation</h2>
             <p>
-                In ZLang, types play a crucial role in defining the nature of variables and data structures.
-                They bring a sense of clarity and precision to the language, allowing developers to specify the characteristics of their data.
-                ZLang supports a variety of types, including fundamental types like integers, real numbers, and strings.
-                Understanding how to work with these types is essential for effective programming in ZLang.
+                In ZLang, indentation plays a crucial role, mandating either a single tab or two spaces
+                for each level of indentation. This standard ensures consistent and readable code
+                structures, enhancing codebase comprehension and maintenance. By adhering to this rule,
+                developers foster a unified coding style, promoting collaboration and code clarity throughout
+                the software development process. 
             </p>
             <article>
-                <h2>
-                    Variables
-                </h2>
+                <h3>Keywords</h3>
                 <p>
-                    Variables are containers for storing data values.
-                    In ZLang, each variable must be explicitly assigned a type during its declaration.
-                    This ensures that the interpreter can allocate the correct amount of memory and perform operations with precision.
-                    For example:
+                    Certain keywords in ZLang require indentation, enhancing code organization and readability.
+                    This practice streamlines coding, making it easier to manage and understand complex algorithms
+                    and programs. The following keywords necessitate indentation due to the creation of new scopes:
                 </p>
-                <code>
-                    # Declare and initialize an integer variable
-                    myVar = int(42)
-
-                    # Declare and initialize a real variable with mutation
-                    myReal = real(3.14) : double
-                </code>
-                
-
-                <h2>
-                    Defining a Type
-                </h2>
-
-                <p>
-                    In ZLang, defining a type for variables involves specifying the type and any necessary mutations during their declaration.
-                    This is particularly important for achieving precision and clarity in variable assignments.
-                    Let's delve into the concept using the real type as an example.
-                </p>
-
-                <code>
-                    # Declare and initialize a real number
-                    a = real(0.78)
-                </code>
-
-                <p>
-                    Here, a is a variable of type real, representing a floating-point number.
-                    The <b>real(0.78)</b> part is a type constructor, and it serves two main purposes:
-                </p>
-
                 <ul>
-                    <li><p>
-                        <b>Type Specification:</b>
-                        The <b>real</b> keyword indicates that the variable <b>a</b> is of the real number type.
-                        In ZLang, various types such as <b>int</b>, <b>string</b>, and custom user-defined types can be used.
-                    </p></li>
-                    <li><p>
-                        <b>Initialization:</b>
-                        The value <b>0.78</b> is the initial value assigned to the variable.
-                        This part ensures that a starts with the specified numeric value.
-                    </p></li>
+                    <li>"func"</li>
+                    <li>"def"</li>
+                    <li>"scope"</li>
+                    <li>"op"</li>
+                    <li>"if"</li>
+                    <li>"else"</li>
+                    <li>"catch"</li>
+                    <li>"iterate"</li>
+                    <li>"match"</li>
                 </ul>
-                
                 <p>
-                    The <b>real(0.78)</b> construct acts as a concise way to declare a variable with a specific type and initial value.
-                    It not only communicates the type of data expected but also initializes the variable with the desired value.<br>
-                    For users familiar with other programming languages, this syntax might resemble type casting or conversion.
-                    However, in ZLang, it is a combination of type specification and initialization in a single expression.
-                </p>
-
-                <b>Explanation:</b>
-
-                <ul>
-                    <li><p>
-                        <b>real</b>: Specifies the type of the variable as a real number.
-                    </p></li>
-                    <li><p>
-                        <b>(0.78)</b>: Initializes the variable with the value 0.78.
-                    </p></li>
-                </ul>
-
-                <p>
-                    The combination of type specification and initialization in a single line simplifies the declaration process.
-                    Users can easily communicate the intended type and starting value for their variables, contributing to code clarity and conciseness.
-                </p>
-
-                <h2>
-                    Int
-                </h2>
-                <p>
-                    Integers in ZLang are fundamental numeric types used for representing whole numbers.
-                    They can be initialized and mutated based on the desired precision:
+                    When using any of these keywords, developers must indent the subsequent code to
+                    define the scope associated with the keyword. Proper indentation enhances code
+                    readability and ensures the correct interpretation of the code structure.
                 </p>
                 <code>
-                    # Declare and initialize an integer
-                    a = int(10)
+                    # Example of indentation in ZLang
+                    condition = true
 
-                    # Declare and initialize an integer with mutation
-                    b = int(20) : short
+                    if condition:
+                        # Indented block for the "if" scope
+                        .out("Hello from ZLang!")
+                    else:
+                        # Indented block for the "else" scope
+                        .out("What a wonderful world!")
                 </code>
                 <p>
-                    Here, <b>myInt</b> is a regular integer, while <b>myMutatedInt</b> is mutated to have short precision.
-                    The ability to mutate types adds flexibility to variable declarations.
-                </p>
-                
-                <h2>
-                    Real
-                </h2>
-                <p>
-                    Real numbers in ZLang represent floating-point values.
-                    Developers can control the precision of real numbers through mutations:
-                </p>
-                <code>
-                    # Declare and initialize a real number
-                    myReal = real(3.14)
-
-                    # Declare and initialize a real number with double precision
-                    myDouble = real(2.718) : double
-                </code>
-                <p>
-                    The <b>real</b> type supports mutations like <i>double</i> or <i>single</i>, allowing developers to fine-tune the precision based on their requirements.
-                </p>
-
-                <h2>
-                    String
-                </h2>
-                <p>
-                    Strings are sequences of characters in ZLang.
-                    They are defined using quotes and can be manipulated using built-in string functions:
-                </p>
-                <code>
-                    include usr/std.zlng # Include the standard library for string tools
-                    use zstd # Use the scope or namespace zstd (The main scope of the std.zlng library)
-                    
-                    # Declare and initialize a string
-                    myString = "Hello, World!"
-
-                    # Use a string function to get the length
-                    stringLength = string.len(myString)
-                </code>
-                <p>
-                    In this example, myString is a string variable, and the string.len function is applied to determine its length.
-                    To use some string functions, you must include the standard library for string tools, and use the scope or namespace <b>zstd</b> to access the functions.
-                    The <b>zstd</b> namespace is the main scope of the <b>std.zlng</b> library.
+                    In the example, the "if" and "else" scopes are defined by the indentation
+                    following the respective keywords.
                 </p>
             </article>
+        </section>
+        
+        <section>
+            <h2>Comments</h2>
             <p>
-                Understanding types, variables, and how to define custom types is foundational for ZLang programming.
-                Explicit type declarations enhance code readability and provide a clear structure for data representation.
-                The ability to mutate types adds a layer of flexibility, allowing developers to tailor their data types to specific needs.
+                Comments are crucial in ZLang for adding explanations or notes within the code.
+                The language supports single-line comments (using #) and multi-line comments (using ##).
             </p>
-        </section>
-        
-        <section>
-            <h1>Functions</h1>
             <article>
-                <h2>Returning Values</h2>
-                <aside>
-                    <p>Additional notes about returning values...</p>
-                </aside>
+                <h3>Single-Line</h3>
+                <code>
+                    # This is a single-line comment
+                    variable = value  # This comment is at the end of the line
+                </code>
+
+                <h3>Multi-Line</h3>
+                <code>                    
+                    ##
+                    This is a multi-line comment
+                    It can span across multiple lines until the end is reached.
+                    ##
+                </code>
+                <p>
+                    Note on Multi-Line Comments:
+                    Ensure multi-line comments have both a beginning and an end
+                    to avoid unexpected behavior. The order of comment formation
+                    is crucial, especially with an odd number of multi-line comments.
+                    <br><br>
+                    This comment system in ZLang offers flexibility for developers
+                    to document their code effectively.
+                </p>
             </article>
         </section>
-        
+
         <section>
-            <h1>Mutations</h1>
-        </section>
-        
-        <section>
-            <h1>Classes</h1>
+            <h2>Statements</h2>
+            <p>
+                Statements in ZLang are individual expressions or commands that
+                perform specific actions. By default, a statement ends at the end
+                of a line or with a newline character (\n). However, developers
+                can also use a semicolon (;) to explicitly terminate statements,
+                allowing multiple statements on the same line.
+            </p>
             <article>
-                <h2>Definitions</h2>
-                <h2>Declarations</h2>
-                <h2>Member Variables</h2>
-                    <article>
-                        <h3>Constants</h3>
-                    </article>
-                <h2>Member Functions</h2>
-                    <article>
-                        <h3>Non-Static Functions</h3>
-                        <h3>Static Functions</h3>
-                    </article>
+                <h3>Concluding</h3>
+                <p>
+                    Statements naturally conclude at the end of a line or with a
+                    newline character (\n). This default behavior ensures a clean
+                    and readable code structure.
+                </p>
+                <code>
+                    # Example of statements ending at the end of lines
+                    v = real(42.0)  # A single statement
+                    .out(v)         # Another single statement
+                </code>
+                <p>
+                    Each line in the above example represents a separate statement.
+                </p>
+
+                <h3>Multiple Statements</h3>
+                <p>
+                    ZLang supports using a semicolon to explicitly terminate statements,
+                    enabling multiple statements on a single line.
+                    <br>
+                    This flexibility enhances code readability and accommodates different
+                    coding styles.
+                </p>
+                <code>
+                    # Example of multiple statements on the same line using semicolons
+                    a = 10; b = 20; c = a + b; .out(c)  # 4 statements
+                    .out("Hello"); .out("World!")       # 2 statements
+                </code>
+                <p>
+                    In this example, semicolons separate individual statements, allowing them to coexist on a single line.
+                </p>
             </article>
         </section>
+
+        <br>
+
+        <h1>Syntax</h1>
+        <h2>Literals</h2>
+        <article>
+            <h3>Real literals</h3>
+            <h3>Int literals</h3>
+            <h3>Char literals</h3>
+        </article>
+        
+        <h2>Types</h2>
+        <article>
+            <h3>Built-in</h3>
+            <h3>Standard Library</h3>
+        </article>
+
+        <h2>Code Scopes</h2>
+        <article>
+
+        </article>
+
+        <h2>Functions</h2>
+        <article>
+            <h3>Returning values</h3>
+            <h3>Ending early</h3>
+        </article>
+
+        <br>
+
+        <h1>Concepts</h1>
+        <h2>Mutations</h2>
+        <article>
+            <h3>Usage and uses</h3>
+            <h3>Built-in mutations</h3>
+            <h3>Custom mutations</h3>
+        </article>
+        
+        <h2>Classes</h2>
+        <article>
+            <h3>Class Definition</h3>
+            <h3>Class Declaration</h3>
+        </article>
+
+        <h2>Scope</h2>
+        <article>
+            <h3>Functions</h3>
+            <h3>Classes</h3>
+        </article>
+
+        <h2>Bitwise Operators</h2>
+        <article>
+            <h3>Operators</h3>
+        </article>
+
+        <br>
+
+        <h1>Errors</h1>
+        <h2>Syntax Errors</h2>
+        <article>
+            <h3>Warnings</h3>
+            <h3>Syntax rules</h3>
+        </article>
+
+        <h2>Interpretation Errors</h2>
+        <article>
+            <h3>What's the difference?</h3>
+        </article>
     </body>
 </html>
